@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f0">
+  <meta name="description" content="Satoryuzei Palace: thoughtful city stays in Chennai, Bangalore, and Kochi.">
+  <title>Satoryuzei Palace | Stay, thoughtfully</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="collection.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg app-nav">
+    <div class="container-xl">
+      <a class="navbar-brand brand-lockup" href="#home"><span class="brand-mark">S</span><span>SATORYUZEI <small>PALACE</small></span></a>
+      <div class="collapse navbar-collapse" id="navContent">
+        <div class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+          <button class="nav-link nav-button user-name-nav d-none" id="tripsNav" data-view="trips" aria-label="Open my trips"></button>
+          <button class="nav-link nav-button d-none" id="adminNav" data-view="admin">Management</button>
+        </div>
+      </div>
+      <button class="btn btn-rust btn-sm px-3 header-auth" id="authNav">Sign in</button>
+    </div>
+  </nav>
+
+  <main id="home">
+    <section class="hero container-xl">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> A COLLECTION OF CITY RETREATS</p>
+        <h1>Make room<br>for <em>somewhere</em>.</h1>
+        <p class="hero-intro">Thoughtful Indian hospitality, in places worth slowing down for. Find your next Satoryuzei.</p>
+      </div>
+      <div class="hero-art">
+        <img class="hero-photo" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=90" alt="A welcoming palace hotel surrounded by greenery">
+        <div class="art-caption"><span>01 / 03</span><span>THE ART OF ARRIVING</span></div>
+      </div>
+      <div class="hero-side-note">INDEPENDENTLY MINDED. ALWAYS YOURS.</div>
+    </section>
+
+    <section class="collection-section" id="collection">
+      <div class="container-xl">
+        <div class="section-heading"><div><p class="eyebrow">THREE CITIES, ONE WELCOME</p><h2>Explore the collection</h2></div><p>Stay well, eat well, and let us<br>take care of the details.</p></div>
+        <div id="searchMessage" class="small mb-3" role="status"></div>
+        <div id="collectionGrid" class="collection-grid" aria-live="polite"></div>
+        <div id="roomsSection" class="rooms-section d-none">
+          <div class="rooms-heading"><div><p class="eyebrow mb-2">ROOMS AT THIS LOCATION</p><h3 id="roomsTitle">The rooms</h3></div><button class="btn-close" id="closeRooms" aria-label="Close rooms"></button></div>
+          <div class="room-grid" id="roomGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quiet-note container-xl">
+      <span class="note-number">S / 03</span><p>Good stays are made of small things.<br><em>We take all of them seriously.</em></p><span class="note-rule"></span>
+    </section>
+    <section class="trips-section d-none" id="tripsView">
+      <div class="container-xl"><div class="section-heading"><div><p class="eyebrow">YOUR SATORYUZEI JOURNAL</p><h2>Upcoming & past stays</h2></div><button class="btn btn-outline-dark" id="refreshTrips">Refresh</button></div><div id="bookingList"></div></div>
+    </section>
+    <section class="admin-section d-none" id="adminView">
+      <div class="container-xl"><div class="section-heading"><div><p class="eyebrow">PROPERTY OPERATIONS</p><h2>Management overview</h2></div><button class="btn btn-outline-dark" id="refreshAdmin">Refresh</button></div>
+        <div id="adminSummary" class="summary-grid"></div>
+        <div class="admin-columns"><div class="admin-list"><h3>Properties</h3><div id="adminBranches"></div></div>
+          <div class="admin-form-wrap"><h3>Add a property</h3><form id="branchForm" class="row g-2"><div class="col-12"><input class="form-control" name="name" placeholder="Property name" required></div><div class="col-12"><input class="form-control" name="city" placeholder="City" required></div><div class="col-12"><input class="form-control" name="address" placeholder="Street address" required></div><div class="col-md-6"><input class="form-control" name="phone" placeholder="Phone"></div><div class="col-md-6"><input class="form-control" name="description" placeholder="Short description"></div><div class="col-12"><button class="btn btn-rust" type="submit">Add property</button></div></form>
+            <hr><h3>Add a room</h3><form id="roomForm" class="row g-2"><div class="col-12"><select class="form-select" name="branch_id" id="adminBranchSelect" required><option value="">Choose property</option></select></div><div class="col-md-6"><input class="form-control" name="name" placeholder="Room name" required></div><div class="col-md-6"><input class="form-control" name="room_type" placeholder="Room type" required></div><div class="col-md-6"><input class="form-control" name="capacity" type="number" min="1" placeholder="Capacity" required></div><div class="col-md-6"><input class="form-control" name="price_per_night" type="number" min="0" step="0.01" placeholder="Price / night" required></div><div class="col-12"><textarea class="form-control" name="description" rows="2" placeholder="Description"></textarea></div><div class="col-12"><button class="btn btn-rust" type="submit">Add room</button></div></form>
+          </div>
+        </div>
+        <div class="admin-list bookings-admin"><div class="d-flex justify-content-between align-items-center"><h3>All bookings</h3><button class="btn btn-sm btn-outline-dark" id="refreshAdminBookings">Refresh</button></div><div id="adminBookingList"></div></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptTitle" aria-hidden="true"><div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><div><p class="eyebrow mb-1">RESERVATION CONFIRMED</p><h2 class="modal-title" id="receiptTitle">Your booking details</h2></div><button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><div id="receiptContent" class="receipt-content"></div><p class="receipt-payment-note">Payment method is recorded as a preference only; no payment was charged.</p><div class="receipt-actions"><button class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button><a class="btn btn-rust disabled" id="downloadReceipt" href="#" download aria-disabled="true">Download PDF</a></div></div></div></div></div>
+
+  <footer class="site-footer"><div class="container-xl footer-layout"><div class="footer-brand"><span class="brand-lockup"><span class="brand-mark">S</span><span>SATORYUZEI <small>PALACE</small></span></span></div><span class="footer-note">Thoughtful stays, wherever you find us.</span><span class="footer-copyright">© <span id="year"></span> Satoryuzei Palace</span></div></footer>
+
+  <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authTitle" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><div><p class="eyebrow mb-1">WELCOME TO SATORYUZEI</p><h2 class="modal-title" id="authTitle">Sign in</h2></div><button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><div class="auth-tabs"><button class="active" data-auth-mode="login">Sign in</button><button data-auth-mode="register">Create account</button></div><form id="authForm"><div class="mb-3 d-none" id="nameField"><label class="form-label" for="authName">YOUR NAME</label><input class="form-control" id="authName" name="name" autocomplete="name"></div><div class="mb-3"><label class="form-label" for="authEmail">EMAIL ADDRESS</label><input class="form-control" id="authEmail" name="email" type="email" autocomplete="email" required></div><div class="mb-3"><label class="form-label" for="authPassword">PASSWORD</label><input class="form-control" id="authPassword" name="password" type="password" minlength="8" autocomplete="current-password" required></div><div class="form-error" id="authError" role="alert"></div><button class="btn btn-rust w-100 mt-2" type="submit" id="authSubmit">Continue</button></form></div></div></div></div>
+
+  <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingTitle" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><div><p class="eyebrow mb-1">A GOOD CHOICE</p><h2 class="modal-title" id="bookingTitle">Confirm your stay</h2></div><button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><div id="bookingDetails" class="booking-detail"></div><p id="bookingAvailability" class="booking-availability" role="status" aria-live="polite"></p><div class="booking-date-fields"><div><label class="form-label" for="bookingCheckIn">CHECK IN</label><input class="form-control" id="bookingCheckIn" type="date" required></div><div><label class="form-label" for="bookingCheckOut">CHECK OUT</label><input class="form-control" id="bookingCheckOut" type="date" required></div><div><label class="form-label" for="bookingGuestCount">GUESTS</label><select class="form-select" id="bookingGuestCount"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div></div><div class="booking-guest-fields"><div><label class="form-label" for="bookingGuestName">FULL NAME</label><input class="form-control" id="bookingGuestName" type="text" autocomplete="name" maxlength="120" required></div><div><label class="form-label" for="bookingGuestPhone">PHONE NUMBER</label><input class="form-control" id="bookingGuestPhone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10}" minlength="10" maxlength="10" title="Enter a 10-digit phone number" required></div><div><label class="form-label" for="bookingIdType">ID PROOF TYPE</label><select class="form-select" id="bookingIdType" required><option value="Aadhaar">Aadhaar</option><option value="Passport">Passport</option><option value="Driving licence">Driving licence</option><option value="Voter ID">Voter ID</option><option value="Other">Other</option></select></div><div><label class="form-label" for="bookingIdLast4">LAST 4 DIGITS ONLY</label><input class="form-control" id="bookingIdLast4" type="text" inputmode="numeric" pattern="[0-9]{4}" minlength="4" maxlength="4" title="Enter exactly four digits" placeholder="1234" required><small class="field-note">Do not enter the full ID number.</small></div></div><fieldset class="booking-payment"><legend class="form-label">PAYMENT METHOD</legend><label><input type="radio" name="bookingPaymentMethod" value="card" checked required> Card</label><label><input type="radio" name="bookingPaymentMethod" value="upi" required> UPI</label><small class="field-note">Payment selection is recorded only; this demo does not charge your card or UPI account.</small></fieldset><p class="form-error" id="bookingError" role="alert"></p><button class="btn btn-rust w-100" id="confirmBooking">Confirm reservation</button></div></div></div></div>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-3"><div id="appToast" class="toast" role="status" aria-live="polite"><div class="toast-body d-flex justify-content-between align-items-center"><span id="toastMessage"></span><button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button></div></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

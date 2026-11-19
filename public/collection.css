@@ -1,0 +1,78 @@
+.hero-art{background:#d7e1d7}
+.app-nav{min-height:88px;background:var(--rust);border-bottom-color:var(--rust-dark)}
+.app-nav .brand-lockup,.app-nav .nav-link{color:#fffefa}
+.app-nav .brand-mark{background:var(--rust-dark);border-color:#fffefa;color:#fffefa}
+.app-nav .nav-link:hover{color:#f4d6ca}
+.app-nav .user-name-nav{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.app-nav .header-auth{background:#fffefa;border-color:#fffefa;color:var(--rust-dark);font-weight:700}
+.app-nav .header-auth:hover{background:#f4e3dc;border-color:#f4e3dc;color:var(--rust-dark)}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 55%}
+.hero-art:after{content:"";position:absolute;inset:55% 0 0;background:linear-gradient(transparent,rgba(18,34,27,.45));z-index:1}
+.art-caption{color:#fff}
+.branch-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.branch-card{padding:0;background:var(--white);border:0;min-height:0}
+.branch-card-photo{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.branch-card-copy{padding:18px 18px 16px}
+.branch-card .branch-index{display:block;font-size:9px;letter-spacing:1.4px}
+.branch-card h3{margin-top:5px}
+.branch-card p{min-height:58px}
+.branch-card-footer button{white-space:nowrap}
+.room-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.room-card{padding:0;overflow:hidden}
+.room-card-photo{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.room-card-content{padding:17px 18px 18px}
+.room-card-content>p{min-height:42px}
+.booking-availability{margin:0 0 16px;font-size:12px;font-weight:700;color:#466d57}.booking-availability.is-unavailable{color:#a3442a}
+.collection-section{background:#f4f3ed;padding:76px 0 70px;scroll-margin-top:76px}
+.collection-grid{display:grid;grid-template-columns:1fr;gap:0}
+.property-showcase{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);column-gap:7%;row-gap:31px;padding:45px 0;border-top:1px solid #d5d8ce}
+.property-photo-wrap{height:350px;position:relative;overflow:hidden;background:#d8e2d9}
+.property-photo{width:100%;height:100%;object-fit:cover;display:block}
+.property-photo-label{position:absolute;left:15px;bottom:14px;color:#fff;font-size:10px;letter-spacing:1.8px;text-shadow:0 1px 5px #1f2c24}
+.property-copy{align-self:center;max-width:500px}
+.property-copy h3{font:normal 40px/1.1 var(--serif);letter-spacing:0;margin:0 0 16px}
+.property-copy h3 em{font-weight:400;color:var(--rust)}
+.property-description{color:#58635d;font-size:13px;line-height:1.75;max-width:430px}
+.hospitality-notes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:24px 0}
+.hospitality-notes h4{font-size:9px;letter-spacing:1.5px;margin:0 0 9px;color:var(--rust)}
+.hospitality-notes p{font-size:11px;line-height:1.65;color:#64706a;margin:0}
+.property-book{border:0;border-bottom:1px solid var(--rust);background:transparent;padding:0 0 8px}
+.booking-date-fields,.booking-guest-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+.booking-date-fields>div:last-child{grid-column:1/-1}
+.booking-guest-fields{border-top:1px solid var(--line);padding-top:14px}
+.field-note{display:block;color:var(--muted);font-size:10px;line-height:1.45;margin-top:5px}
+.booking-payment{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;border:0;border-top:1px solid var(--line);padding:14px 0 0;margin:16px 0}
+.booking-payment legend{float:none;width:100%;margin:0;font-size:9px;letter-spacing:1.5px;font-weight:700;color:#66716b}
+.booking-payment label{display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer}
+.booking-payment input{accent-color:var(--rust)}
+.booking-payment .field-note{flex-basis:100%;margin-top:0}
+.receipt-content .receipt-code{font-size:9px;letter-spacing:1.5px;color:var(--rust);margin-bottom:10px}
+.receipt-content dl{margin:0}
+.receipt-content dl>div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;border-top:1px solid var(--line);padding:9px 0;font-size:11px}
+.receipt-content dt{color:var(--muted);font-weight:400}
+.receipt-content dd{margin:0;text-align:right;overflow-wrap:anywhere}
+.receipt-content .receipt-total{font-weight:700;font-size:13px}
+.receipt-payment-note{font-size:10px;line-height:1.5;color:var(--muted);margin:14px 0 0}
+.receipt-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+.site-footer{background:var(--rust);color:#fffefa;padding:25px 0}
+.site-footer .brand-lockup{color:#fffefa}
+.site-footer .brand-mark{background:var(--rust-dark);border-color:#fffefa;color:#fffefa}
+.footer-layout{display:flex;align-items:center;justify-content:space-between;gap:22px}
+.footer-brand{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.footer-brand address{display:flex;flex-direction:column;gap:5px;margin:0 0 0 44px;font-size:10px;line-height:1.5;font-style:normal;color:rgba(255,254,250,.92)}
+.footer-brand address a{color:inherit;text-decoration:none}
+.footer-note,.footer-copyright{font-size:10px;color:rgba(255,254,250,.92)}
+@media(max-width:767.98px){
+  .receipt-content dl>div{grid-template-columns:94px minmax(0,1fr);gap:8px}
+  .receipt-actions{flex-wrap:wrap}
+  .booking-date-fields,.booking-guest-fields{gap:10px}
+  .footer-layout{align-items:flex-start;flex-direction:column}
+  .footer-brand address{margin-left:44px}
+  .branch-grid,.room-grid{grid-template-columns:1fr}
+  .branch-card p{min-height:0}
+  .collection-section{padding:50px 0}
+  .property-showcase{grid-template-columns:1fr;gap:22px;padding:30px 0}
+  .property-photo-wrap{height:260px}
+  .property-copy h3{font-size:34px}
+  .hospitality-notes{gap:15px}
+}
