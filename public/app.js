@@ -417,6 +417,7 @@ $('#roomForm').addEventListener('submit', async (event) => {
 });
 
 async function init() {
+  setUser(null);
   $('#year').textContent = new Date().getFullYear();
   const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
   const dayAfter = new Date(); dayAfter.setDate(dayAfter.getDate() + 2);
