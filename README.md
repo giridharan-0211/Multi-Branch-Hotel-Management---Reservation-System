@@ -2,8 +2,8 @@
 
 A multi-branch hotel reservation application for Chennai, Bangalore, and Kochi, with a PHP JSON REST API, PostgreSQL database, and responsive Bootstrap frontend. Each room category has 20 physical units by default. Room rates are stored and displayed in Indian rupees, starting at ₹4,999 per night.
 
-## Live Demo
-[Live Demo](https://multi-branch-hotel-management.onrender.com/)   
+## Live Multi Branch Hotel Management & Reservation System
+(https://multi-branch-hotel-management.onrender.com/)   
 
 ## Requirements
 
