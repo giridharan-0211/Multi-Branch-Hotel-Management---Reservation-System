@@ -304,8 +304,8 @@ try {
 
     if ($resource === 'bookings' && $method === 'PATCH' && $id !== null && $action === 'cancel') {
         $user = currentUser();
-        $statement = db()->prepare("UPDATE bookings SET status = 'cancelled' WHERE id = :id AND status = 'confirmed' AND (user_id = :user_id OR :is_admin = TRUE) RETURNING id, status");
-        $statement->execute(['id' => $id, 'user_id' => $user['id'], 'is_admin' => $user['role'] === 'admin']);
+        $statement = db()->prepare("UPDATE bookings SET status = 'cancelled' WHERE id = :id AND user_id = :user_id AND status = 'confirmed' AND check_out >= CURRENT_DATE RETURNING id, status");
+        $statement->execute(['id' => $id, 'user_id' => $user['id']]);
         $booking = $statement->fetch();
         if (!$booking) {
             respond(['error' => 'Booking not found or it can no longer be cancelled.'], 404);

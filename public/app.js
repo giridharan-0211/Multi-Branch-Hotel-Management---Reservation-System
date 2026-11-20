@@ -1,5 +1,5 @@
 const API = 'api.php';
-const state = { token: localStorage.getItem('satoryuzei_token'), user: null, branches: [], selectedRoom: null, authMode: 'login' };
+const state = { token: localStorage.getItem('satoryuzei_token'), user: null, branches: [], selectedRoom: null, authMode: 'login', resumeBooking: false };
 const authModal = new bootstrap.Modal(document.getElementById('authModal'));
 const bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
 const receiptModal = new bootstrap.Modal(document.getElementById('receiptModal'));
@@ -88,9 +88,11 @@ function showToast(message) {
 function setUser(user) {
   state.user = user;
   $('#authNav').textContent = user ? 'Sign out' : 'Sign in';
-  $('#tripsNav').textContent = user ? user.name : '';
+  $('#tripsNav').textContent = 'My Bookings';
+  $('#tripsNav').title = user ? `View ${user.name}'s booking records` : '';
   $('#tripsNav').classList.toggle('d-none', !user);
   $('#adminNav').classList.toggle('d-none', !user || user.role !== 'admin');
+  $('#accountMenuDivider').classList.toggle('d-none', !user);
 }
 
 function clearSession() {
@@ -134,9 +136,9 @@ async function showBranchRooms(branchId) {
   }
 }
 
-function openAuth(mode = 'login') {
+function openAuth(mode = 'login', message = '') {
   setAuthMode(mode);
-  $('#authError').textContent = '';
+  $('#authError').textContent = message;
   authModal.show();
 }
 
@@ -162,18 +164,34 @@ async function signOut(announce = true) {
 function hideViews() {
   $('#tripsView').classList.add('d-none');
   $('#adminView').classList.add('d-none');
+  $('#heroSection').classList.remove('d-none');
   $('#collection').classList.remove('d-none');
   document.querySelector('.quiet-note').classList.remove('d-none');
+}
+
+function showHome() {
+  hideViews();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 async function loadTrips() {
   hideViews();
   $('#collection').classList.add('d-none');
   document.querySelector('.quiet-note').classList.add('d-none');
+  $('#heroSection').classList.add('d-none');
   $('#tripsView').classList.remove('d-none');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   $('#bookingList').innerHTML = '<p class="text-muted">Loading your stays…</p>';
   try {
     const data = await request('bookings');
+    const today = localDateString(new Date());
+    const upcoming = data.bookings.filter((booking) => booking.status === 'confirmed' && booking.check_out >= today);
+    const history = data.bookings.filter((booking) => !upcoming.includes(booking));
+    const renderBooking = (booking, cancellable = false) => `<article class="booking-row"><div><h3>${escapeHtml(booking.branch_name)}</h3><p>Booking #${escapeHtml(booking.id)} · ${escapeHtml(booking.branch_city)} · ${escapeHtml(booking.room_name)} (${escapeHtml(booking.room_type)}) · Unit #${escapeHtml(booking.room_unit)}</p></div><div><strong>${formatDate(booking.check_in)} — ${formatDate(booking.check_out)}</strong><p>${booking.guests} guest${Number(booking.guests) === 1 ? '' : 's'}</p></div><div><span class="status-label ${booking.status}">${escapeHtml(booking.status === 'confirmed' ? 'Confirmed' : 'Cancelled')}</span><p>${money(booking.total_price)} total</p></div>${cancellable ? `<button class="btn btn-sm btn-outline-dark" data-cancel="${booking.id}">Cancel Booking</button>` : ''}</article>`;
+    $('#bookingList').innerHTML = data.bookings.length
+      ? `<section class="booking-group"><h3>Active & upcoming bookings</h3>${upcoming.length ? upcoming.map((booking) => renderBooking(booking, true)).join('') : '<p class="booking-empty">No active or upcoming bookings.</p>'}</section><section class="booking-group"><h3>Booking history</h3>${history.length ? history.map((booking) => renderBooking(booking)).join('') : '<p class="booking-empty">No past or cancelled bookings yet.</p>'}</section>`
+      : '<div class="booking-empty"><h3>No bookings yet</h3><p>Your next good story starts with a destination.</p></div>';
+    return;
     $('#bookingList').innerHTML = data.bookings.length ? data.bookings.map((booking) => `<article class="booking-row"><div><h3>${escapeHtml(booking.branch_name)}</h3><p>${escapeHtml(booking.branch_city)} · ${escapeHtml(booking.room_name)} · Unit #${escapeHtml(booking.room_unit)}</p></div><div><strong>${formatDate(booking.check_in)} — ${formatDate(booking.check_out)}</strong><p>${booking.guests} guest${Number(booking.guests) === 1 ? '' : 's'}</p></div><div><span class="status-label ${booking.status}">${escapeHtml(booking.status)}</span><p>${money(booking.total_price)} total</p></div>${booking.status === 'confirmed' ? `<button class="btn btn-sm btn-outline-dark" data-cancel="${booking.id}">Cancel</button>` : ''}</article>`).join('') : '<p class="text-muted">No stays yet. Your next good story starts with a destination.</p>';
   } catch (error) { $('#bookingList').innerHTML = `<p class="form-error">${escapeHtml(error.message)}</p>`; }
 }
@@ -232,6 +250,7 @@ async function loadAdmin() {
   hideViews();
   $('#collection').classList.add('d-none');
   document.querySelector('.quiet-note').classList.add('d-none');
+  $('#heroSection').classList.add('d-none');
   $('#adminView').classList.remove('d-none');
   try {
     const data = await request('admin/overview');
@@ -266,6 +285,11 @@ $('#roomGrid').addEventListener('click', (event) => {
   updateBookingSummary();
   updateBookingAvailability();
   $('#bookingError').textContent = '';
+  if (!state.user) {
+    state.resumeBooking = true;
+    openAuth('login', 'Please log in to book a room.');
+    return;
+  }
   bookingModal.show();
 });
 $('#bookingCheckIn').addEventListener('change', () => {
@@ -301,7 +325,7 @@ $('#confirmBooking').addEventListener('click', async () => {
     $('#bookingError').textContent = 'Choose valid check-in and check-out dates.';
     return;
   }
-  if (!state.user) { bookingModal.hide(); openAuth(); return; }
+  if (!state.user) { state.resumeBooking = true; bookingModal.hide(); openAuth('login', 'Please log in to book a room.'); return; }
   const button = $('#confirmBooking');
   button.disabled = true;
   try {
@@ -338,14 +362,29 @@ $('#authForm').addEventListener('submit', async (event) => {
     authModal.hide();
     event.currentTarget.reset();
     showToast(`Welcome${data.user.name ? `, ${data.user.name.split(' ')[0]}` : ' back'}.`);
-    if (state.selectedRoom) bookingModal.show();
+    if (state.resumeBooking && state.selectedRoom) $('#bookingGuestName').value = data.user.name || '';
   } catch (error) { $('#authError').textContent = error.message; }
+});
+
+$('#authModal').addEventListener('hidden.bs.modal', () => {
+  if (state.resumeBooking && state.user && state.selectedRoom) {
+    state.resumeBooking = false;
+    bookingModal.show();
+  } else if (!state.user) {
+    state.resumeBooking = false;
+  }
 });
 
 document.addEventListener('click', async (event) => {
   const cancel = event.target.closest('[data-cancel]');
-  if (cancel && window.confirm('Cancel this reservation?')) {
-    try { await request(`bookings/${cancel.dataset.cancel}/cancel`, { method: 'PATCH' }); showToast('Reservation cancelled.'); state.user.role === 'admin' && !$('#adminView').classList.contains('d-none') ? await loadAdmin() : await loadTrips(); }
+  if (cancel && window.confirm('Cancel this reservation? This cannot be undone.')) {
+    cancel.disabled = true;
+    try {
+      await request(`bookings/${cancel.dataset.cancel}/cancel`, { method: 'PATCH' });
+      showToast('Reservation cancelled. The room is available for those dates again.');
+      if (!$('#roomsSection').classList.contains('d-none') && state.selectedRoom) await showBranchRooms(state.selectedRoom.branchId);
+      state.user.role === 'admin' && !$('#adminView').classList.contains('d-none') ? await loadAdmin() : await loadTrips();
+    }
     catch (error) { showToast(error.message); }
   }
   const viewButton = event.target.closest('[data-view]');
@@ -353,6 +392,7 @@ document.addEventListener('click', async (event) => {
   if (viewButton?.dataset.view === 'admin') loadAdmin();
 });
 $('#refreshTrips').addEventListener('click', loadTrips);
+$('#backToHome').addEventListener('click', showHome);
 $('#refreshAdmin').addEventListener('click', loadAdmin);
 $('#refreshAdminBookings').addEventListener('click', loadAdminBookings);
 $('#closeRooms').addEventListener('click', () => $('#roomsSection').classList.add('d-none'));

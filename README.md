@@ -75,7 +75,7 @@ All API responses are JSON. Protected endpoints accept `Authorization: Bearer <t
 | GET | `/api.php/bookings` | Signed in | Current user's bookings |
 | GET | `/api.php/bookings?all=true` | Admin | All bookings |
 | POST | `/api.php/bookings` | Signed in | Reserve a room |
-| PATCH | `/api.php/bookings/{id}/cancel` | Owner or admin | Cancel a confirmed booking |
+| PATCH | `/api.php/bookings/{id}/cancel` | Booking owner | Cancel a current or upcoming confirmed booking |
 | GET | `/api.php/admin/overview` | Admin | Property, room, booking, and revenue summary |
 | POST | `/api.php/admin/branches` | Admin | Add a property |
 | POST | `/api.php/admin/rooms` | Admin | Add a room |
@@ -98,7 +98,8 @@ The API validates dates and guest capacity, uses prepared statements, calculates
 - Browse Satoryuzei Palace in Chennai, Bangalore, and Kochi, including hotel photos, dining and room-service descriptions, and photos of Standard AC, Standard Non AC, Deluxe AC, and Deluxe Non AC rooms.
 - Search room availability by destination, stay dates, and guest count; displayed room prices start at ₹4,999 per night.
 - Each category defaults to 20 numbered units. Availability is counted for the selected stay dates, and a booking reserves one free unit so up to 20 guests can book that room type for overlapping dates.
-- Register, sign in, book, and cancel reservations.
+- Register, sign in, book, and cancel reservations. Selecting a room while signed out opens sign-in first and returns the guest to that room's booking form after authentication.
+- A signed-in guest can view their own bookings, separated into active/upcoming stays and booking history; cancellation retains the historical record and releases availability.
 - Admin overview with booking/revenue totals and forms to add properties and rooms.
 - Seed SQL can be run again without duplicating the sample properties or rooms.
 
